@@ -49,10 +49,29 @@ Ouvrir [http://localhost:3000](http://localhost:3000).
 
 ## Déploiement Vercel
 
+### Option recommandée (Root Directory)
+
 1. Importer le repo sur [vercel.com](https://vercel.com)
-2. **Root Directory** : `web`
-3. Ajouter les variables d'environnement (mêmes que `.env.local`)
-4. Configurer le webhook Stripe vers `https://votre-domaine.vercel.app/api/webhooks/stripe`
+2. **Settings → General → Root Directory** → cliquer **Edit** → saisir `web` → **Save**
+3. **Framework Preset** : **Next.js**
+4. Ajouter les variables d'environnement (voir `.env.local.example` dans `web/`)
+5. Redéployer
+
+### Si Root Directory reste `./`
+
+Un `vercel.json` à la racine du repo redirige install/build vers `web/`. Poussez les derniers commits puis redéployez.
+
+| Variable | Exemple |
+|----------|---------|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://xxx.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | clé anon |
+| `SUPABASE_SERVICE_ROLE_KEY` | clé service role |
+| `STRIPE_SECRET_KEY` | `sk_test_...` |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_...` |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | `pk_test_...` |
+| `NEXT_PUBLIC_APP_URL` | `https://debo-patisseries.vercel.app` |
+
+Webhook Stripe : `https://votre-domaine.vercel.app/api/webhooks/stripe`
 
 ## Pages
 
