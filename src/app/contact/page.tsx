@@ -1,4 +1,5 @@
 import { Header } from "@/components/layout/Header";
+import { BUSINESS } from "@/lib/constants/business";
 
 export default function ContactPage() {
   return (
@@ -8,8 +9,11 @@ export default function ContactPage() {
         <h1 className="mb-4 font-display text-headline-md text-primary">
           Contact
         </h1>
-        <p className="mb-8 font-body text-body-md text-on-surface-variant">
+        <p className="mb-2 font-body text-body-md text-on-surface-variant">
           Une question sur nos créations ? Nous serions ravis de vous répondre.
+        </p>
+        <p className="mb-8 font-body text-label-md text-primary">
+          {BUSINESS.name} — {BUSINESS.locationLine}
         </p>
         <form className="max-w-md space-y-6">
           <div>
@@ -23,6 +27,20 @@ export default function ContactPage() {
               id="name"
               type="text"
               className="w-full border-b-2 border-outline-variant bg-transparent py-2 font-body text-body-md text-on-surface focus:border-primary focus:outline-none"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="phone"
+              className="mb-2 block font-body text-label-md text-secondary"
+            >
+              Téléphone
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              placeholder="+225 07 XX XX XX XX"
+              className="w-full border-b-2 border-outline-variant bg-transparent py-2 font-body text-body-md text-on-surface placeholder:text-outline/60 focus:border-primary focus:outline-none"
             />
           </div>
           <div>

@@ -2,16 +2,10 @@
 
 import { useActionState } from "react";
 import { deleteProduct, updateProduct } from "@/app/admin/actions";
+import { ProductImageFields } from "@/components/admin/ProductImageFields";
+import { CATEGORY_LABELS, PRODUCT_CATEGORIES } from "@/lib/constants/categories";
 import { formatPrice } from "@/lib/utils/format";
 import type { Product } from "@/lib/types/database";
-
-const CATEGORIES = [
-  "mignardises",
-  "macarons",
-  "tartelettes",
-  "entremets",
-  "accompaniment",
-];
 
 export function ProductRow({ product }: { product: Product }) {
   const [deleteState, deleteAction, deletePending] = useActionState(deleteProduct, null);
@@ -19,8 +13,14 @@ export function ProductRow({ product }: { product: Product }) {
 
   return (
     <article className="rounded-card border border-outline-variant/40 bg-surface p-4">
-      <form action={updateAction} className="grid gap-3 md:grid-cols-6 md:items-end">
+      <form
+        action={updateAction}
+        encType="multipart/form-data"
+        className="grid gap-3 md:grid-cols-6 md:items-end"
+      >
         <input type="hidden" name="id" value={product.id} />
+        <input type="hidden" name="slug" value={product.slug} />
+        <input type="hidden" name="current_image_url" value={product.image_url ?? ""} />
 
         <div className="md:col-span-2">
           <label className="mb-1 block font-body text-label-sm text-outline">Nom</label>
@@ -33,13 +33,13 @@ export function ProductRow({ product }: { product: Product }) {
         </div>
 
         <div>
-          <label className="mb-1 block font-body text-label-sm text-outline">Prix (€)</label>
+          <label className="mb-1 block font-body text-label-sm text-outline">Prix (FCFA)</label>
           <input
             name="price"
             type="number"
-            step="0.01"
+            step="1"
             min="0"
-            defaultValue={(product.price_cents / 100).toFixed(2)}
+            defaultValue={product.price_cents}
             required
             className="w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 font-body text-body-md"
           />
@@ -52,21 +52,16 @@ export function ProductRow({ product }: { product: Product }) {
             defaultValue={product.category}
             className="w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 font-body text-body-md"
           >
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
+            {PRODUCT_CATEGORIES.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="md:col-span-2">
-          <label className="mb-1 block font-body text-label-sm text-outline">Image URL</label>
-          <input
-            name="image_url"
-            defaultValue={product.image_url ?? ""}
-            className="w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 font-body text-body-md"
-          />
+        <div className="md:col-span-6">
+          <ProductImageFields currentUrl={product.image_url} slug={product.slug} />
         </div>
 
         <div className="md:col-span-6">
@@ -92,6 +87,8 @@ export function ProductRow({ product }: { product: Product }) {
             Actif
           </label>
           <span className="font-body text-label-sm text-outline">
+            {CATEGORY_LABELS[product.category as keyof typeof CATEGORY_LABELS] ?? product.category}
+            {" · "}
             slug: {product.slug} · {formatPrice(product.price_cents)}
           </span>
         </div>
@@ -114,9 +111,13 @@ export function ProductRow({ product }: { product: Product }) {
         <p className="mt-2 font-body text-label-sm text-primary">Mis à jour.</p>
       ) : null}
 
-      <form action={deleteAction} className="mt-3 border-t border-outline-variant/30 pt-3" onSubmit={(e) => {
-        if (!confirm("Supprimer ce produit ?")) e.preventDefault();
-      }}>
+      <form
+        action={deleteAction}
+        className="mt-3 border-t border-outline-variant/30 pt-3"
+        onSubmit={(e) => {
+          if (!confirm("Supprimer ce produit ?")) e.preventDefault();
+        }}
+      >
         <input type="hidden" name="id" value={product.id} />
         <button
           type="submit"

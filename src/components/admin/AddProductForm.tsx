@@ -2,14 +2,8 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { createProduct } from "@/app/admin/actions";
-
-const CATEGORIES = [
-  { value: "mignardises", label: "Mignardises" },
-  { value: "macarons", label: "Macarons" },
-  { value: "tartelettes", label: "Tartelettes" },
-  { value: "entremets", label: "Entremets" },
-  { value: "accompaniment", label: "Accompagnement (coffret)" },
-];
+import { ProductImageFields } from "@/components/admin/ProductImageFields";
+import { PRODUCT_CATEGORIES } from "@/lib/constants/categories";
 
 export function AddProductForm() {
   const [open, setOpen] = useState(false);
@@ -34,6 +28,7 @@ export function AddProductForm() {
   return (
     <form
       action={action}
+      encType="multipart/form-data"
       className="rounded-card border border-outline-variant/40 bg-surface-container-low p-6"
     >
       <h2 className="mb-6 font-display text-headline-sm text-secondary">
@@ -43,7 +38,7 @@ export function AddProductForm() {
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Nom *" name="name" required />
         <Field label="Slug (auto si vide)" name="slug" placeholder="tarte-pomme" />
-        <Field label="Prix (€) *" name="price" type="number" step="0.01" min="0" required />
+        <Field label="Prix (FCFA) *" name="price" type="number" step="1" min="0" required />
         <div>
           <label className="mb-2 block font-body text-label-md text-secondary">
             Catégorie *
@@ -54,19 +49,16 @@ export function AddProductForm() {
             defaultValue="mignardises"
             className="w-full rounded-card border border-outline-variant bg-surface px-4 py-3 font-body text-body-md"
           >
-            {CATEGORIES.map((c) => (
+            {PRODUCT_CATEGORIES.map((c) => (
               <option key={c.value} value={c.value}>
                 {c.label}
               </option>
             ))}
           </select>
         </div>
-        <Field
-          label="URL image"
-          name="image_url"
-          className="md:col-span-2"
-          placeholder="https://..."
-        />
+
+        <ProductImageFields />
+
         <div className="md:col-span-2">
           <label className="mb-2 block font-body text-label-md text-secondary">
             Description

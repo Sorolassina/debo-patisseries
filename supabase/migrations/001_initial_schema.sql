@@ -1,5 +1,5 @@
 -- Douceur du palais — Schéma initial
--- Exécuter dans l'éditeur SQL Supabase ou via CLI
+-- Les montants price_cents sont en F CFA entiers (ex. 3500 = 3 500 FCFA)
 
 create extension if not exists "uuid-ossp";
 
@@ -228,7 +228,7 @@ insert into public.products (
     false,
     false
   ),
-  -- Accompagnements (page coffret)
+  -- Accompagnements (menu + coffret)
   (
     'the-earl-grey-royal',
     'Thé Earl Grey Royal',

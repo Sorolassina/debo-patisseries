@@ -1,4 +1,9 @@
-export type MenuCategory = "mignardises" | "macarons" | "tartelettes" | "entremets";
+import {
+  PRODUCT_CATEGORIES,
+  type ProductCategory,
+} from "@/lib/constants/categories";
+
+export type MenuCategory = ProductCategory;
 
 export interface MenuProduct {
   id: string;
@@ -11,12 +16,10 @@ export interface MenuProduct {
   seasonal?: boolean;
 }
 
-export const MENU_CATEGORIES: { id: MenuCategory; label: string }[] = [
-  { id: "mignardises", label: "Mignardises" },
-  { id: "macarons", label: "Macarons" },
-  { id: "tartelettes", label: "Tartelettes" },
-  { id: "entremets", label: "Entremets" },
-];
+export const MENU_CATEGORIES = PRODUCT_CATEGORIES.map(({ value, label }) => ({
+  id: value,
+  label,
+}));
 
 export const MENU_PRODUCTS: MenuProduct[] = [
   {
@@ -113,5 +116,41 @@ export const MENU_PRODUCTS: MenuProduct[] = [
     imageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuD7zw6a3Yj8Mke3agX36rvrYxz68kkpUR1Xiz87AcK5echUNJS_RjxWGYWQvDLVeva7GWFZfqggw8v9apV475BFc8D65l8R2o8jxQeaWojoe848FWHA67aDXFY3u7cIjtPbToC4eg3Cspd2DebWvECUAKRz9Hr6OkWpS6RLVEbTxnqBEBuFL7xfvt-x4cu-NtQ9yJmIYsmjXX9axF86GoU5hUsVZs7-APUuxFDPEqUuN0M1ij7gHpAj",
     imageAlt: "Millefeuille caramélisé",
+  },
+  {
+    id: "the-earl-grey-royal",
+    name: "Thé Earl Grey Royal",
+    category: "accompaniment",
+    priceCents: 1800,
+    imageUrl:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCURhuh6IJ83V-gTJhL0MTnko2jlWseNL5JRnT5m7xv4dr9obwjiD9Cru-7Mm9QOoieAcIEmUoi2zTjXs8EomlxyQShV9_0eJyeFWWyMqhWFGHfRHqXNkRnmtBIjF5ioswrtTqyErcukZ-3ZshcMUKgCSUw7cHbVoZtDLjMg4fvSU9MeGVobAIP1-GUhRq-3Fj08klmr7Z4iGWox_0k-HS1b26bW6gWQ0U8CB4OoRdK6P-Vbs20Fzig",
+    imageAlt: "Thé d'exception aux notes florales",
+  },
+  {
+    id: "champagne-rose",
+    name: "Champagne Rosé",
+    category: "accompaniment",
+    priceCents: 5500,
+    imageUrl:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBzJzpNwwQWWWbnNW8ITLddyUX9HKfxU730J47gJViH3OonNqurgfQibROOnjEFI5diippxC7BDpQ2ZSW7ie_H_x44Qn4V2kBZD0tsDaEbUKpxD8G48zRTT0qAyUl4fpIivoyEyoABomt6096Gn2jdK3-5jdBWBO2zizaCBrusLb3n9YsfA4MaG8fUvbhEW1lqQHufDu1kMCXqzHdjqoyxlo-gsywqbreTtTpOcvheZmyr5qoNSPW55",
+    imageAlt: "Cuvée prestige pour célébrer",
+  },
+  {
+    id: "caramel-fleur-de-sel",
+    name: "Caramel à la Fleur de Sel",
+    category: "accompaniment",
+    priceCents: 1250,
+    imageUrl:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAAt5ExvwsCy4yZz4H5RPk-8-tZpdjMN0v4U2Z2Pobu5GAFc2VKJiwDy_5rqRD1HmDnJCPaogn58j7mRDym2Ip9fHyAi1ik_y1oQ4ggSuBQ9k_F3yh0MLvVbCpR5hkwQWLe3WkmdPB-mDYeNS3t9MZAsgo1q4SV1Zgn5TdxO4A_DSXHASRhaqqHwJSUlHoHngU8McqdzmMM7HoOEynAic_5X0LjAn2zTNLYmoonZggksnUXO64MThMt",
+    imageAlt: "Préparation artisanale",
+  },
+  {
+    id: "bougie-douceur-vanillee",
+    name: "Bougie \"Douceur Vanillée\"",
+    category: "accompaniment",
+    priceCents: 2200,
+    imageUrl:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDBaajgUwRdbBWfOlLs3DlxLVYXniE-iudQVBKg30jdtK9sMOw61WP9QWSwBhmPuZFAFmy72y13993FsKsJZGuJgYDtDAdjHsLA7IHkCTLYacAUI7I5hTD3PqTAGWuNDDbME_8-7sqwKd9D-VsJbh-2dagPZ3Lzd4DAsAbrqoAwsOHxOziyXHCSg_aP9Nw7RTDCFJa9BczvkKcQM4ribznuPkxH_1s5n8_C9-91dpbnH-N056KOC1D_",
+    imageAlt: "Parfum vanille et lavande",
   },
 ];

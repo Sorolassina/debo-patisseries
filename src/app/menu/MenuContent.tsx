@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { CategoryChips } from "@/components/menu/CategoryChips";
 import { MenuProductCard } from "@/components/menu/MenuProductCard";
 import { MENU_CATEGORIES, type MenuCategory, type MenuProduct } from "@/lib/constants/menu";
+import { BUSINESS } from "@/lib/constants/business";
 
 interface MenuContentProps {
   products: MenuProduct[];
@@ -25,7 +26,7 @@ export function MenuContent({ products }: MenuContentProps) {
       <main className="mx-auto max-w-container-max px-margin-mobile pb-36 pt-24 md:px-margin-desktop">
         <header className="mb-8">
           <span className="mb-3 block font-body text-label-md uppercase tracking-[0.25em] text-primary">
-            Haute Pâtisserie
+            {BUSINESS.tagline} · {BUSINESS.city}
           </span>
           <h1 className="font-display text-headline-md text-secondary md:text-display-lg-mobile">
             Nos Créations

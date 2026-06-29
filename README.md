@@ -1,6 +1,6 @@
-# L'Artisan Doré — Pâtisserie
+# Douceur du palais — Pâtisserie (Abidjan, Côte d'Ivoire)
 
-Application e-commerce pour une pâtisserie haut de gamme.
+Application e-commerce pour une pâtisserie haut de gamme ivoirienne. Prix en **F CFA**, locale **fr-CI**.
 
 **Stack :** Next.js 16 · Tailwind CSS 4 · Supabase · Stripe · Vercel
 

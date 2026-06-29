@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { SITE_METADATA } from "@/lib/constants/business";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -17,11 +18,10 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Douceur du palais | Haute Pâtisserie Française",
-    template: "%s | Douceur du palais",
+    default: SITE_METADATA.title,
+    template: `%s | Douceur du palais`,
   },
-  description:
-    "Crafting moments of pure elegance through the art of fine French pastry.",
+  description: SITE_METADATA.description,
 };
 
 export default function RootLayout({

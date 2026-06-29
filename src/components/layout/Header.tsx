@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
+import { BUSINESS } from "@/lib/constants/business";
 
 interface HeaderProps {
   transparent?: boolean;
@@ -77,7 +78,7 @@ export function Header({ transparent = false, showBack = false }: HeaderProps) {
           href="/"
           className="font-display text-display-lg-mobile tracking-tight text-primary md:text-[1.75rem]"
         >
-          Douceur du palais
+          {BUSINESS.name}
         </Link>
 
         <button
