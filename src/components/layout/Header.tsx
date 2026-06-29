@@ -77,7 +77,7 @@ export function Header({ transparent = false, showBack = false }: HeaderProps) {
           href="/"
           className="font-display text-display-lg-mobile tracking-tight text-primary md:text-[1.75rem]"
         >
-          L&apos;Artisan Pâtissier
+          Douceur du palais
         </Link>
 
         <button

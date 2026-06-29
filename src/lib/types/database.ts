@@ -12,31 +12,40 @@ export interface Database {
       products: {
         Row: {
           id: string;
+          slug: string;
           name: string;
           description: string | null;
           price_cents: number;
           image_url: string | null;
           category: string;
+          is_chefs_pick: boolean;
+          is_seasonal: boolean;
           is_active: boolean;
           created_at: string;
         };
         Insert: {
           id?: string;
+          slug: string;
           name: string;
           description?: string | null;
           price_cents: number;
           image_url?: string | null;
           category?: string;
+          is_chefs_pick?: boolean;
+          is_seasonal?: boolean;
           is_active?: boolean;
           created_at?: string;
         };
         Update: {
           id?: string;
+          slug?: string;
           name?: string;
           description?: string | null;
           price_cents?: number;
           image_url?: string | null;
           category?: string;
+          is_chefs_pick?: boolean;
+          is_seasonal?: boolean;
           is_active?: boolean;
           created_at?: string;
         };

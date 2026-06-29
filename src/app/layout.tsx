@@ -18,8 +18,8 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "L'Artisan Doré | Haute Pâtisserie Française",
-    template: "%s | L'Artisan Doré",
+    default: "Douceur du palais | Haute Pâtisserie Française",
+    template: "%s | Douceur du palais",
   },
   description:
     "Crafting moments of pure elegance through the art of fine French pastry.",

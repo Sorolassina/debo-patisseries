@@ -32,7 +32,7 @@ export default function HomePage() {
 
           <div className="mb-12">
             <h1 className="font-display text-display-lg-mobile text-white drop-shadow-lg md:text-display-lg">
-              L&apos;Artisan Doré
+              Douceur du palais
             </h1>
             <div className="mx-auto mt-6 h-px w-24 bg-primary-fixed-dim" />
           </div>
@@ -44,7 +44,7 @@ export default function HomePage() {
 
           <div className="flex flex-col items-center justify-center gap-6 md:flex-row">
             <Link href="/menu">
-              <Button>Discover our menu</Button>
+              <Button>Découvrir le menu</Button>
             </Link>
             <Link href="/coffret">
               <Button variant="secondary">Personnaliser un coffret</Button>
