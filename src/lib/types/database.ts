@@ -49,6 +49,7 @@ export interface Database {
           is_active?: boolean;
           created_at?: string;
         };
+        Relationships: [];
       };
       box_sizes: {
         Row: {
@@ -75,6 +76,7 @@ export interface Database {
           price_cents?: number;
           sort_order?: number;
         };
+        Relationships: [];
       };
       box_themes: {
         Row: {
@@ -95,6 +97,7 @@ export interface Database {
           color_hex?: string;
           sort_order?: number;
         };
+        Relationships: [];
       };
       orders: {
         Row: {
@@ -133,6 +136,7 @@ export interface Database {
           box_theme_id?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       order_items: {
         Row: {
@@ -156,6 +160,7 @@ export interface Database {
           quantity?: number;
           unit_price_cents?: number;
         };
+        Relationships: [];
       };
       favorites: {
         Row: {
@@ -176,8 +181,12 @@ export interface Database {
           product_id?: string;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
   };
 }
 

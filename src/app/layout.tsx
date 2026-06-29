@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
-import { BottomNav } from "@/components/layout/BottomNav";
-import { TextureOverlay } from "@/components/layout/TextureOverlay";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -39,9 +38,7 @@ export default function RootLayout({
         />
       </head>
       <body className="overflow-x-hidden">
-        {children}
-        <BottomNav />
-        <TextureOverlay />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

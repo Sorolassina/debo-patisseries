@@ -103,6 +103,14 @@ Webhook Stripe : `https://votre-domaine.vercel.app/api/webhooks/stripe`
 | `/panier` | Panier & confirmation |
 | `/contact` | Formulaire contact |
 | `/compte` | Authentification |
+| `/admin` | Back-office catalogue (protégé par mot de passe) |
+
+### Administration
+
+1. Ajoutez `ADMIN_PASSWORD` dans `.env.local` et sur **Vercel**
+2. Ouvrez `/admin/login`
+3. Gérez les produits : ajout, modification, suppression
+4. Les changements apparaissent immédiatement sur `/menu`
 
 ## Design system
 
