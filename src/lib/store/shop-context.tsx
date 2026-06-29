@@ -6,14 +6,35 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
+import { createClient } from "@/lib/supabase/client";
 import type { CartLine, ProductSnapshot } from "@/lib/store/types";
 import { toPackagingCartLine, toProductCartLine } from "@/lib/store/types";
 
-const CART_KEY = "debo-cart";
-const FAVORITES_KEY = "debo-favorites";
+const CART_PREFIX = "debo-cart";
+const FAVORITES_PREFIX = "debo-favorites";
+const GUEST_SCOPE = "guest";
+const GUEST_SESSION_KEY = "debo-guest-session";
+
+/** Un identifiant unique par onglet — isole les visiteurs invités entre eux. */
+function getGuestScope(): string {
+  if (typeof window === "undefined") return `${GUEST_SCOPE}:ssr`;
+
+  let sessionId = sessionStorage.getItem(GUEST_SESSION_KEY);
+  if (!sessionId) {
+    sessionId = crypto.randomUUID();
+    sessionStorage.setItem(GUEST_SESSION_KEY, sessionId);
+  }
+
+  return `${GUEST_SCOPE}:${sessionId}`;
+}
+
+function resolveScope(userId: string | null | undefined): string {
+  return userId ?? getGuestScope();
+}
 
 type Toast = { message: string; id: number } | null;
 
@@ -42,14 +63,41 @@ type ShopContextValue = {
 
 const ShopContext = createContext<ShopContextValue | null>(null);
 
-function readStorage<T>(key: string, fallback: T): T {
+function scopedKey(prefix: string, scope: string): string {
+  return `${prefix}:${scope}`;
+}
+
+function readScopedStorage<T>(prefix: string, scope: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
-    const raw = localStorage.getItem(key);
+    const raw = localStorage.getItem(scopedKey(prefix, scope));
     return raw ? (JSON.parse(raw) as T) : fallback;
   } catch {
     return fallback;
   }
+}
+
+function writeScopedStorage(prefix: string, scope: string, value: unknown): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(scopedKey(prefix, scope), JSON.stringify(value));
+}
+
+/** Anciennes clés globales → session invité courante, une seule fois. */
+function migrateLegacyStorage(prefix: string): void {
+  if (typeof window === "undefined") return;
+
+  const legacy = localStorage.getItem(prefix);
+  const legacyGuest = localStorage.getItem(scopedKey(prefix, GUEST_SCOPE));
+  const source = legacy ?? legacyGuest;
+  if (!source) return;
+
+  const targetKey = scopedKey(prefix, getGuestScope());
+  if (!localStorage.getItem(targetKey)) {
+    localStorage.setItem(targetKey, source);
+  }
+
+  localStorage.removeItem(prefix);
+  localStorage.removeItem(scopedKey(prefix, GUEST_SCOPE));
 }
 
 function normalizeCartLine(line: CartLine): CartLine {
@@ -60,26 +108,81 @@ function normalizeCartLine(line: CartLine): CartLine {
   };
 }
 
+function loadShopState(scope: string): {
+  cart: CartLine[];
+  favorites: ProductSnapshot[];
+} {
+  return {
+    cart: readScopedStorage<CartLine[]>(CART_PREFIX, scope, []).map(normalizeCartLine),
+    favorites: readScopedStorage<ProductSnapshot[]>(FAVORITES_PREFIX, scope, []),
+  };
+}
+
 export function ShopProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartLine[]>([]);
   const [favorites, setFavorites] = useState<ProductSnapshot[]>([]);
   const [hydrated, setHydrated] = useState(false);
   const [toast, setToast] = useState<Toast>(null);
+  const scopeRef = useRef(GUEST_SCOPE);
+  const cartRef = useRef(cart);
+  const favoritesRef = useRef(favorites);
 
   useEffect(() => {
-    setCart(readStorage<CartLine[]>(CART_KEY, []).map(normalizeCartLine));
-    setFavorites(readStorage(FAVORITES_KEY, []));
-    setHydrated(true);
+    cartRef.current = cart;
+  }, [cart]);
+
+  useEffect(() => {
+    favoritesRef.current = favorites;
+  }, [favorites]);
+
+  const switchScope = useCallback((nextScope: string) => {
+    if (nextScope === scopeRef.current) return;
+
+    writeScopedStorage(CART_PREFIX, scopeRef.current, cartRef.current);
+    writeScopedStorage(FAVORITES_PREFIX, scopeRef.current, favoritesRef.current);
+
+    scopeRef.current = nextScope;
+    const next = loadShopState(nextScope);
+    setCart(next.cart);
+    setFavorites(next.favorites);
   }, []);
 
   useEffect(() => {
+    migrateLegacyStorage(CART_PREFIX);
+    migrateLegacyStorage(FAVORITES_PREFIX);
+
+    const supabase = createClient();
+    let initialized = false;
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      const nextScope = resolveScope(session?.user?.id);
+
+      if (!initialized) {
+        scopeRef.current = nextScope;
+        const initial = loadShopState(nextScope);
+        setCart(initial.cart);
+        setFavorites(initial.favorites);
+        setHydrated(true);
+        initialized = true;
+        return;
+      }
+
+      switchScope(nextScope);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [switchScope]);
+
+  useEffect(() => {
     if (!hydrated) return;
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    writeScopedStorage(CART_PREFIX, scopeRef.current, cart);
   }, [cart, hydrated]);
 
   useEffect(() => {
     if (!hydrated) return;
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    writeScopedStorage(FAVORITES_PREFIX, scopeRef.current, favorites);
   }, [favorites, hydrated]);
 
   const showToast = useCallback((message: string) => {
