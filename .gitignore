@@ -1,0 +1,17 @@
+# Dependencies
+web/node_modules/
+
+# Environment
+web/.env
+web/.env.local
+
+# Next.js
+web/.next/
+web/out/
+
+# Vercel
+web/.vercel/
+
+# OS
+.DS_Store
+Thumbs.db

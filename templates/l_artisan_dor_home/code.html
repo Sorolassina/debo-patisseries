@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>L'Artisan Doré | Haute Pâtisserie Française</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&family=Playfair+Display:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(30, 27, 22, 0.3) 0%, rgba(30, 27, 22, 0.1) 50%, rgba(30, 27, 22, 0.4) 100%);
+        }
+        .glass-blur {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .scroll-indicator::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, #755b00, transparent);
+            left: 50%;
+            top: 100%;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#4e3b3b",
+                        "background": "#fff8f0",
+                        "on-secondary-fixed": "#2e1505",
+                        "on-background": "#1e1b16",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#eee7dd",
+                        "surface-container-highest": "#e8e2d8",
+                        "on-tertiary-fixed-variant": "#564242",
+                        "on-secondary": "#ffffff",
+                        "outline": "#7e7665",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#7a5540",
+                        "surface-variant": "#e8e2d8",
+                        "inverse-on-surface": "#f7f0e6",
+                        "secondary-fixed-dim": "#edbca3",
+                        "on-primary-fixed": "#241a00",
+                        "on-primary-container": "#503d00",
+                        "secondary": "#7b5641",
+                        "on-surface-variant": "#4d4637",
+                        "secondary-container": "#ffcdb2",
+                        "secondary-fixed": "#ffdbc9",
+                        "inverse-surface": "#33302a",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#c0a5a5",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#271718",
+                        "surface-tint": "#755b00",
+                        "surface-container": "#f4ede3",
+                        "outline-variant": "#d0c5b2",
+                        "primary": "#755b00",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#e6c364",
+                        "tertiary": "#6f5959",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#c9a84c",
+                        "tertiary-fixed": "#f9dcdc",
+                        "surface-bright": "#fff8f0",
+                        "on-primary-fixed-variant": "#584400",
+                        "on-surface": "#1e1b16",
+                        "tertiary-fixed-dim": "#dcc0c0",
+                        "inverse-primary": "#e6c364",
+                        "primary-fixed": "#ffe08f",
+                        "surface": "#fff8f0",
+                        "on-secondary-fixed-variant": "#613f2c",
+                        "surface-container-low": "#faf3e9",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#e0d9d0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Playfair Display"],
+                        "label-sm": ["DM Sans"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "label-md": ["DM Sans"],
+                        "headline-md": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-lg": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- Top Navigation Bar (Shared Component Strategy) -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm shadow-secondary/5 transition-all duration-300">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<!-- Leading: Avatar placeholder for user profile -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden active:scale-95 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-on-secondary-container text-[18px]">person</span>
+</div>
+</div>
+<!-- Brand Logo: L'Artisan Pâtissier -->
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-[28px] text-primary tracking-tight cursor-pointer">
+                L'Artisan Pâtissier
+            </h1>
+<!-- Trailing: Search Icon -->
+<button class="text-primary hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</div>
+</header>
+<!-- Hero Section / Splash Screen -->
+<main class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 z-0">
+<img alt="A lavish assortment of French pastries including colorful macarons, elegant chocolate éclairs, and fruit tarts garnished with gold leaf, meticulously arranged on a white marble slab. The setting is a bright, sunlit Parisian apartment with soft morning light streaming through a window, illuminating brass bowls and fine porcelain teacups in the blurred background. The overall mood is sophisticated, indulgent, and artisanal, emphasizing luxury and culinary craftsmanship." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7zw6a3Yj8Mke3agX36rvrYxz68kkpUR1Xiz87AcK5echUNJS_RjxWGYWQvDLVeva7GWFZfqggw8v9apV475BFc8D65l8R2o8jxQeaWojoe848FWHA67aDXFY3u7cIjtPbToC4eg3Cspd2DebWvECUAKRz9Hr6OkWpS6RLVEbTxnqBEBuFL7xfvt-x4cu-NtQ9yJmIYsmjXX9axF86GoU5hUsVZs7-APUuxFDPEqUuN0M1ij7gHpAj"/>
+<div class="absolute inset-0 hero-overlay"></div>
+</div>
+<!-- Central Content -->
+<div class="relative z-10 text-center px-margin-mobile max-w-2xl animate-fade-in opacity-0" style="animation-delay: 0.2s;">
+<span class="font-label-md text-label-md text-primary-fixed-dim uppercase tracking-[0.3em] mb-6 block">Haute Pâtisserie Française</span>
+<div class="mb-12">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white leading-tight drop-shadow-lg">
+                    L'Artisan Doré
+                </h2>
+<div class="w-24 h-[1px] bg-primary-fixed-dim mx-auto mt-6"></div>
+</div>
+<p class="font-body-lg text-body-lg text-white/90 mb-10 max-w-md mx-auto leading-relaxed italic">
+                Crafting moments of pure elegance through the art of fine French pastry.
+            </p>
+<div class="flex flex-col md:flex-row items-center justify-center gap-6">
+<!-- Primary CTA -->
+<button class="group relative px-8 py-4 bg-primary text-on-primary rounded-full font-label-md text-label-md tracking-wider overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 active:scale-95">
+<span class="relative z-10">Discover our menu</span>
+<div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+</button>
+<!-- Secondary Link -->
+<button class="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-label-md text-label-md tracking-wider hover:bg-white/20 transition-all active:scale-95">
+                    Our Heritage
+                </button>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+<span class="font-label-sm text-label-sm text-white/60 tracking-widest uppercase">Scroll</span>
+<div class="scroll-indicator relative h-4"></div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile Focused Floating Design) -->
+<!-- Determined active: None/Home but "Menu" is the closest intent for a splash screen -->
+<nav class="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-md rounded-full bg-surface/90 backdrop-blur-lg shadow-xl shadow-secondary/10 z-50 flex justify-around items-center p-2">
+<!-- Active Tab: Menu -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-2 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="font-label-sm text-label-sm">Menu</span>
+</a>
+<!-- Inactive Tab: Favorites -->
+<a class="flex flex-col items-center justify-center text-outline px-5 py-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="favorite">favorite</span>
+<span class="font-label-sm text-label-sm">Favorites</span>
+</a>
+<!-- Inactive Tab: Cart -->
+<a class="flex flex-col items-center justify-center text-outline px-5 py-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="shopping_bag">shopping_bag</span>
+<span class="font-label-sm text-label-sm">Cart</span>
+</a>
+<!-- Inactive Tab: Contact -->
+<a class="flex flex-col items-center justify-center text-outline px-5 py-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="contact_support">contact_support</span>
+<span class="font-label-sm text-label-sm">Contact</span>
+</a>
+</nav>
+<!-- Subtle Texture Overlay -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[100]" style="background-image: url('https://www.transparenttextures.com/patterns/p6.png');"></div>
+<script>
+        // Simple micro-interaction for the top nav reveal on scroll
+        let lastScroll = 0;
+        const header = document.querySelector('header');
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                header.classList.remove('-translate-y-full');
+                header.classList.add('bg-transparent');
+                header.classList.remove('bg-surface/80');
+                return;
+            }
+            
+            if (currentScroll > lastScroll && currentScroll > 64) {
+                header.classList.add('-translate-y-full');
+            } else {
+                header.classList.remove('-translate-y-full');
+                header.classList.add('bg-surface/80');
+                header.classList.remove('bg-transparent');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Initialize state
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.pageYOffset === 0) {
+                header.classList.add('bg-transparent');
+                header.classList.remove('bg-surface/80');
+            }
+        });
+    </script>
+</body></html>

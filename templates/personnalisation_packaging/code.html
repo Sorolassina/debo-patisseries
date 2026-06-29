@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>L'Artisan Pâtissier - Personnalisez votre coffret</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=DM+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "primary-fixed-dim": "#e6c364",
+                  "on-secondary-fixed": "#2e1505",
+                  "inverse-on-surface": "#f7f0e6",
+                  "inverse-primary": "#e6c364",
+                  "on-secondary-container": "#7a5540",
+                  "secondary-container": "#ffcdb2",
+                  "surface-variant": "#e8e2d8",
+                  "on-surface": "#1e1b16",
+                  "tertiary": "#6f5959",
+                  "surface-container-highest": "#e8e2d8",
+                  "primary": "#755b00",
+                  "tertiary-container": "#c0a5a5",
+                  "secondary-fixed": "#ffdbc9",
+                  "primary-fixed": "#ffe08f",
+                  "on-primary-fixed": "#241a00",
+                  "on-error": "#ffffff",
+                  "on-tertiary-fixed-variant": "#564242",
+                  "background": "#fff8f0",
+                  "on-secondary-fixed-variant": "#613f2c",
+                  "surface-container-high": "#eee7dd",
+                  "on-error-container": "#93000a",
+                  "primary-container": "#c9a84c",
+                  "inverse-surface": "#33302a",
+                  "on-primary": "#ffffff",
+                  "tertiary-fixed-dim": "#dcc0c0",
+                  "surface": "#fff8f0",
+                  "surface-container-lowest": "#ffffff",
+                  "secondary-fixed-dim": "#edbca3",
+                  "on-primary-container": "#503d00",
+                  "on-background": "#1e1b16",
+                  "outline-variant": "#d0c5b2",
+                  "surface-container-low": "#faf3e9",
+                  "secondary": "#7b5641",
+                  "on-tertiary": "#ffffff",
+                  "outline": "#7e7665",
+                  "surface-dim": "#e0d9d0",
+                  "tertiary-fixed": "#f9dcdc",
+                  "on-tertiary-container": "#4e3b3b",
+                  "on-primary-fixed-variant": "#584400",
+                  "surface-tint": "#755b00",
+                  "surface-bright": "#fff8f0",
+                  "on-surface-variant": "#4d4637",
+                  "error-container": "#ffdad6",
+                  "surface-container": "#f4ede3",
+                  "error": "#ba1a1a",
+                  "on-tertiary-fixed": "#271718",
+                  "on-secondary": "#ffffff"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "gutter": "24px",
+                  "margin-mobile": "20px",
+                  "unit": "4px",
+                  "margin-desktop": "64px",
+                  "container-max": "1200px"
+          },
+          "fontFamily": {
+                  "headline-sm": ["Playfair Display"],
+                  "display-lg-mobile": ["Playfair Display"],
+                  "label-sm": ["DM Sans"],
+                  "label-md": ["DM Sans"],
+                  "body-lg": ["DM Sans"],
+                  "body-md": ["DM Sans"],
+                  "headline-md": ["Playfair Display"],
+                  "display-lg": ["Playfair Display"]
+          },
+          "fontSize": {
+                  "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                  "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                  "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                  "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                  "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #e6c364;
+      border-radius: 10px;
+    }
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .box-hover:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(123, 86, 65, 0.1);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed antialiased overflow-x-hidden">
+<!-- Navigation Shell (TopAppBar) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md shadow-sm shadow-secondary/5">
+<div class="flex justify-between items-center px-margin-mobile h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary active:scale-95 duration-200">arrow_back</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-outline text-sm">person</span>
+</div>
+</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary tracking-tight md:text-[24px]">L'Artisan Pâtissier</h1>
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95 duration-200" data-icon="search">search</button>
+</div>
+</nav>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Hero Section: Visual Showcase (Bento Left) -->
+<div class="lg:col-span-7 space-y-8">
+<header>
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Personnalisez votre coffret</h2>
+<p class="font-body-md text-on-surface-variant max-w-md">Créez un écrin sur mesure pour vos moments d'exception. Chaque coffret est préparé à la main avec soin.</p>
+</header>
+<div class="relative aspect-[4/5] md:aspect-[16/10] overflow-hidden rounded-[20px] shadow-xl shadow-secondary/10 group cursor-pointer">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A luxurious high-end gift box for pastries, open to reveal a plush interior with delicate gold leaf details. The box is made of high-quality cream-colored cardstock with gold embossed patterns. Soft warm morning light streams in from a window, illuminating the fine texture of the paper and the reflective gold. The atmosphere is elegant, Michelin-star quality, and minimalist." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4hAfFP-xvh90sFN4kTXfO0w7sbD5wU12BWqmad4Zj2DnN16U5x3lOZkrrTUKhnLofptluMWf8GR3iTmSiTNB8QTGIgCzLSAbX2v6tZeneUC_Yr1rxBCLLLdOodLya4xyFBfmZP3vv_mdehoh39gANFgi1Uwhm7XuMtTPEJcKZTCjhhyZsK2aL4AuoPj_zrNtSYvj6HWoCSP6JDbEGc0eoJE6xJhbrDF7GShdG9YsQ_B0PNbkKx7rA')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-secondary/40 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<span class="inline-block px-3 py-1 bg-primary text-white font-label-sm text-label-sm rounded-full mb-2">L'Artisanat Français</span>
+<p class="text-white font-headline-sm text-headline-sm italic">"L'élégance se cache dans les détails"</p>
+</div>
+</div>
+<!-- Small Grid of Details -->
+<div class="grid grid-cols-3 gap-4">
+<div class="aspect-square rounded-[20px] overflow-hidden border border-outline-variant hover:border-primary transition-colors">
+<div class="w-full h-full bg-cover bg-center" data-alt="Close-up of a hand-tied blush pink silk ribbon on a cream pastry box, soft focus background, elegant and tactile texture." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDH2ILkbD_p0lsH0gvkVQ8rg4XX6QAx-TI_yCDaJUgv0C89d6z6tkyYiBay1L-MKW1ZAL26R5TiS5DoOLS5UTPrD2TsKoeRxkEvwUu9QR59vzUswTdACQfBWT1P5DG9RgSmqCEYo53AgwP2fqg9SMeEBF5ao3aTAF3JuHUInk-BXfiX94E91QIA7U7hq8FW2UB5z_mIFFx4fcNc2q9-gOGwnv-sA7jNpV-U0492rFfVu4_e53OciPH6')"></div>
+</div>
+<div class="aspect-square rounded-[20px] overflow-hidden border border-outline-variant hover:border-primary transition-colors">
+<div class="w-full h-full bg-cover bg-center" data-alt="Macro shot of gold leaf flakes being carefully applied to a deep chocolate brown gift box, artisan craftsmanship detail, warm moody lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBhUZ6uaHRLhTLz-GEWckr9ekcGFspRh408P-rDe9Md-rRpU8owbQdOMn903cdEXOO1whzohFnlECh5aM55guhblgiazamukVycQsTcyvgCKd3D7GsPigxHKgkgAixPefKrY5UG1dHeO-OuKeFPFUa2anFOMaaNgQ9xkgB9n_V8-tuwBlgEEluC158kizDxlUEzoNQ8sHghG5JDg_FkASTC7j8X682U4Avxpu5CzTueYae-itX93sBC')"></div>
+</div>
+<div class="aspect-square rounded-[20px] overflow-hidden border border-outline-variant hover:border-primary transition-colors">
+<div class="w-full h-full bg-cover bg-center" data-alt="Minimalist top view of three different sized pastry boxes nested together, showing the scale from small to large in a neutral cream setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5B3TRylpC-E81L8u9cHGBzxVPKSotkN_HQ5LSmWO3NbibMSQfzNl38AdnBsCeg6Ks5jrWJfknrb7f7LfXh80jp6aUk7C2a7H8uOH2LFsFN7grR488R2QPJg9OfHi37y0bjV13ppT_sx2Sq6s34rE8q-pWRZphwebuoBOFhPg7WAkqfHuIfLXC85rSo9Dp0fbM5QAPiCyLV34da3KtIF3GUa0WVpdx_BodUh0W-xu2YinKrmk5TPXr')"></div>
+</div>
+</div>
+</div>
+<!-- Configuration Section (Bento Right) -->
+<div class="lg:col-span-5 space-y-10">
+<!-- 1. Selection of box sizes -->
+<section>
+<div class="flex items-center gap-2 mb-6">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-md">1</span>
+<h3 class="font-headline-sm text-headline-sm text-secondary">Taille du coffret</h3>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<label class="relative flex items-center p-4 border border-outline-variant rounded-[20px] cursor-pointer hover:bg-surface-container-low transition-all group active:scale-95">
+<input checked="" class="hidden peer" name="box_size" type="radio"/>
+<div class="peer-checked:bg-primary-fixed w-full absolute inset-0 rounded-[20px] opacity-0 peer-checked:opacity-10 transition-opacity"></div>
+<div class="peer-checked:border-primary w-full absolute inset-0 rounded-[20px] border-2 border-transparent transition-colors"></div>
+<div class="flex-1">
+<p class="font-body-lg text-on-surface font-medium">Petit Coffret</p>
+<p class="font-label-sm text-on-surface-variant">Idéal pour une dégustation intime (6 pièces)</p>
+</div>
+<span class="font-label-md text-primary">24,00€</span>
+</label>
+<label class="relative flex items-center p-4 border border-outline-variant rounded-[20px] cursor-pointer hover:bg-surface-container-low transition-all group active:scale-95">
+<input class="hidden peer" name="box_size" type="radio"/>
+<div class="peer-checked:bg-primary-fixed w-full absolute inset-0 rounded-[20px] opacity-0 peer-checked:opacity-10 transition-opacity"></div>
+<div class="peer-checked:border-primary w-full absolute inset-0 rounded-[20px] border-2 border-transparent transition-colors"></div>
+<div class="flex-1">
+<p class="font-body-lg text-on-surface font-medium">Coffret Signature</p>
+<p class="font-label-sm text-on-surface-variant">L'équilibre parfait pour offrir (12 pièces)</p>
+</div>
+<span class="font-label-md text-primary">45,00€</span>
+</label>
+<label class="relative flex items-center p-4 border border-outline-variant rounded-[20px] cursor-pointer hover:bg-surface-container-low transition-all group active:scale-95">
+<input class="hidden peer" name="box_size" type="radio"/>
+<div class="peer-checked:bg-primary-fixed w-full absolute inset-0 rounded-[20px] opacity-0 peer-checked:opacity-10 transition-opacity"></div>
+<div class="peer-checked:border-primary w-full absolute inset-0 rounded-[20px] border-2 border-transparent transition-colors"></div>
+<div class="flex-1">
+<p class="font-body-lg text-on-surface font-medium">Le Grand Écrin</p>
+<p class="font-label-sm text-on-surface-variant">Une expérience gastronomique complète (24 pièces)</p>
+</div>
+<span class="font-label-md text-primary">82,00€</span>
+</label>
+</div>
+</section>
+<!-- 2. Selection of colors/themes -->
+<section>
+<div class="flex items-center gap-2 mb-6">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-md">2</span>
+<h3 class="font-headline-sm text-headline-sm text-secondary">Thème &amp; Coloris</h3>
+</div>
+<div class="flex flex-wrap gap-4">
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-[#ffcdb2] border-4 border-surface shadow-md ring-2 ring-transparent group-hover:ring-primary-container transition-all"></div>
+<span class="font-label-sm text-on-surface-variant">Rose Poudré</span>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-[#e6c364] border-4 border-surface shadow-md ring-2 ring-primary transition-all"></div>
+<span class="font-label-sm text-primary font-bold">Or Artisan</span>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-[#2e1505] border-4 border-surface shadow-md ring-2 ring-transparent group-hover:ring-primary-container transition-all"></div>
+<span class="font-label-sm text-on-surface-variant">Chocolat Profond</span>
+</div>
+</div>
+</section>
+<!-- 3. Personalized Note -->
+<section>
+<div class="flex items-center gap-2 mb-6">
+<span class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-md">3</span>
+<h3 class="font-headline-sm text-headline-sm text-secondary">Mot personnalisé</h3>
+</div>
+<div class="space-y-4">
+<p class="font-label-sm text-on-surface-variant italic">Laissez un message manuscrit pour accompagner votre cadeau...</p>
+<textarea class="w-full bg-surface-container-low border-none border-b-2 border-primary focus:ring-0 focus:border-primary-container rounded-t-xl min-h-[120px] font-body-md text-secondary placeholder:text-outline/50 transition-all" placeholder="Écrivez votre message ici (max 150 caractères)..."></textarea>
+<div class="flex items-center gap-2">
+<input class="rounded-full text-primary focus:ring-primary-container border-outline-variant" id="gift_option" type="checkbox"/>
+<label class="font-label-sm text-on-surface-variant" for="gift_option">Cacher le prix sur le bordereau</label>
+</div>
+</div>
+</section>
+<!-- Action Area -->
+<div class="pt-6 border-t border-outline-variant flex items-center justify-between gap-6">
+<div class="flex flex-col">
+<span class="font-label-sm text-outline uppercase tracking-widest">Total Estimé</span>
+<span class="font-headline-md text-headline-md text-on-surface">45,00€</span>
+</div>
+<button class="flex-1 bg-primary text-white py-4 px-8 rounded-full font-label-md text-label-md hover:bg-on-primary-container active:scale-95 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group">
+            Ajouter au panier
+            <span class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">shopping_bag</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Related Products / Upsell section -->
+<section class="mt-24">
+<h3 class="font-headline-md text-headline-md text-secondary text-center mb-12">Accompagnements suggérés</h3>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface rounded-[20px] shadow-sm hover:shadow-xl transition-shadow duration-300 p-4 border border-outline-variant/30 flex flex-col items-center text-center">
+<div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-primary-fixed-dim">
+<div class="w-full h-full bg-cover bg-center" data-alt="A delicate porcelain tea cup filled with golden Earl Grey tea, rose petals floating on top, luxury tea setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCURhuh6IJ83V-gTJhL0MTnko2jlWseNL5JRnT5m7xv4dr9obwjiD9Cru-7Mm9QOoieAcIEmUoi2zTjXs8EomlxyQShV9_0eJyeFWWyMqhWFGHfRHqXNkRnmtBIjF5ioswrtTqyErcukZ-3ZshcMUKgCSUw7cHbVoZtDLjMg4fvSU9MeGVobAIP1-GUhRq-3Fj08klmr7Z4iGWox_0k-HS1b26bW6gWQ0U8CB4OoRdK6P-Vbs20Fzig')"></div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">Thé Earl Grey Royal</h4>
+<p class="font-label-sm text-primary">18,00€</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface rounded-[20px] shadow-sm hover:shadow-xl transition-shadow duration-300 p-4 border border-outline-variant/30 flex flex-col items-center text-center">
+<div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-primary-fixed-dim">
+<div class="w-full h-full bg-cover bg-center" data-alt="Two crystal champagne flutes with bubbles rising, soft golden lighting, luxury celebration mood." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzJzpNwwQWWWbnNW8ITLddyUX9HKfxU730J47gJViH3OonNqurgfQibROOnjEFI5diippxC7BDpQ2ZSW7ie_H_x44Qn4V2kBZD0tsDaEbUKpxD8G48zRTT0qAyUl4fpIivoyEyoABomt6096Gn2jdK3-5jdBWBO2zizaCBrusLb3n9YsfA4MaG8fUvbhEW1lqQHufDu1kMCXqzHdjqoyxlo-gsywqbreTtTpOcvheZmyr5qoNSPW55')"></div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">Champagne Rosé</h4>
+<p class="font-label-sm text-primary">55,00€</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface rounded-[20px] shadow-sm hover:shadow-xl transition-shadow duration-300 p-4 border border-outline-variant/30 flex flex-col items-center text-center">
+<div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-primary-fixed-dim">
+<div class="w-full h-full bg-cover bg-center" data-alt="A small jar of premium salted caramel sauce with a gold spoon, artisan dessert condiment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAAt5ExvwsCy4yZz4H5RPk-8-tZpdjMN0v4U2Z2Pobu5GAFc2VKJiwDy_5rqRD1HmDnJCPaogn58j7mRDym2Ip9fHyAi1ik_y1oQ4ggSuBQ9k_F3yh0MLvVbCpR5hkwQWLe3WkmdPB-mDYeNS3t9MZAsgo1q4SV1Zgn5TdxO4A_DSXHASRhaqqHwJSUlHoHngU8McqdzmMM7HoOEynAic_5X0LjAn2zTNLYmoonZggksnUXO64MThMt')"></div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">Caramel à la Fleur de Sel</h4>
+<p class="font-label-sm text-primary">12,50€</p>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface rounded-[20px] shadow-sm hover:shadow-xl transition-shadow duration-300 p-4 border border-outline-variant/30 flex flex-col items-center text-center">
+<div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-primary-fixed-dim">
+<div class="w-full h-full bg-cover bg-center" data-alt="A small scented candle in a white porcelain jar, lavender and vanilla fragrance for a luxury spa-like dessert experience." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBaajgUwRdbBWfOlLs3DlxLVYXniE-iudQVBKg30jdtK9sMOw61WP9QWSwBhmPuZFAFmy72y13993FsKsJZGuJgYDtDAdjHsLA7IHkCTLYacAUI7I5hTD3PqTAGWuNDDbME_8-7sqwKd9D-VsJbh-2dagPZ3Lzd4DAsAbrqoAwsOHxOziyXHCSg_aP9Nw7RTDCFJa9BczvkKcQM4ribznuPkxH_1s5n8_C9-91dpbnH-N056KOC1D_')"></div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">Bougie "Douceur Vanillée"</h4>
+<p class="font-label-sm text-primary">22,00€</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-md rounded-full bg-surface/90 dark:bg-surface-container-high/90 backdrop-blur-lg shadow-xl shadow-secondary/10 z-50 flex justify-around items-center p-2">
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant px-5 py-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="font-label-sm text-label-sm">Menu</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant px-5 py-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-sm text-label-sm">Favorites</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-5 py-2 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_bag" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+<span class="font-label-sm text-label-sm">Cart</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline-variant px-5 py-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span class="font-label-sm text-label-sm">Contact</span>
+</a>
+</nav>
+<script>
+    // Subtle hover interaction for color swatches
+    const swatches = document.querySelectorAll('.group.cursor-pointer');
+    swatches.forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        swatches.forEach(s => {
+          const circle = s.querySelector('div');
+          const label = s.querySelector('span');
+          circle.classList.remove('ring-primary');
+          circle.classList.add('ring-transparent');
+          label.classList.remove('text-primary', 'font-bold');
+          label.classList.add('text-on-surface-variant');
+        });
+        const circle = swatch.querySelector('div');
+        const label = swatch.querySelector('span');
+        circle.classList.remove('ring-transparent');
+        circle.classList.add('ring-primary');
+        label.classList.remove('text-on-surface-variant');
+        label.classList.add('text-primary', 'font-bold');
+      });
+    });
+
+    // Auto-expand textarea on typing
+    const textarea = document.querySelector('textarea');
+    textarea.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    });
+  </script>
+</body></html>
