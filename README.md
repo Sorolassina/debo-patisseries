@@ -8,9 +8,10 @@ Application e-commerce pour une pâtisserie haut de gamme.
 
 ```
 debo-patisseries/
+├── .github/workflows/  # CI — migrations Supabase auto
 ├── templates/          # Maquettes HTML & design system (référence)
 ├── src/                # Application Next.js
-├── supabase/           # Migrations SQL
+├── supabase/           # Config CLI + migrations SQL
 └── public/             # Assets statiques
 ```
 
@@ -18,19 +19,45 @@ debo-patisseries/
 
 ```bash
 cp .env.local.example .env.local
-# Renseigner les clés Supabase et Stripe
 npm install
 npm run dev
+```
+
+Variables locales (recommandé) :
+
+```bash
+npx vercel login
+npx vercel link
+npx vercel env pull .env.local
 ```
 
 Ouvrir [http://localhost:3000](http://localhost:3000).
 
 ## Configuration Supabase
 
-1. Créer un projet sur [supabase.com](https://supabase.com)
-2. Exécuter `supabase/migrations/001_initial_schema.sql` dans l'éditeur SQL
-3. Copier l'URL et la clé anon dans `.env.local`
-4. (Optionnel) Ajouter `SUPABASE_SERVICE_ROLE_KEY` pour les webhooks Stripe
+### Migrations automatiques (GitHub Actions)
+
+À chaque push sur `main` modifiant `supabase/migrations/`, la CI applique les migrations via `supabase db push`.
+
+**Secrets à ajouter dans GitHub** → repo → **Settings → Secrets and variables → Actions** :
+
+| Secret | Où le trouver |
+|--------|----------------|
+| `SUPABASE_ACCESS_TOKEN` | [supabase.com/dashboard/account/tokens](https://supabase.com/dashboard/account/tokens) |
+| `SUPABASE_PROJECT_ID` | Supabase → **Project Settings → General → Reference ID** |
+| `SUPABASE_DB_PASSWORD` | Mot de passe défini à la création du projet (ou **Database → Reset password**) |
+
+Déclenchement manuel possible : **Actions → Deploy Supabase Migrations → Run workflow**.
+
+### Migrations en local
+
+```bash
+npx supabase login
+npx supabase link --project-ref VOTRE_PROJECT_ID
+npm run db:push
+```
+
+Les fichiers SQL sont dans `supabase/migrations/`.
 
 ## Configuration Stripe
 

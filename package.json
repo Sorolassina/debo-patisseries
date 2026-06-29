@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:push": "supabase db push --linked",
+    "db:link": "supabase link"
   },
   "dependencies": {
     "@stripe/stripe-js": "^9.8.0",
