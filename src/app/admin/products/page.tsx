@@ -1,8 +1,11 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { AddProductForm } from "@/components/admin/AddProductForm";
 import { ProductRow } from "@/components/admin/ProductRow";
 import { isAdminAuthenticated } from "@/lib/admin/auth";
+import { getAllCategoriesAdmin } from "@/lib/supabase/categories";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { FALLBACK_CATEGORIES } from "@/lib/constants/categories";
 import type { Product } from "@/lib/types/database";
 
 export default async function AdminProductsPage() {
@@ -11,6 +14,11 @@ export default async function AdminProductsPage() {
   }
 
   let products: Product[] = [];
+  const dbCategories = await getAllCategoriesAdmin();
+  const categories =
+    dbCategories.length > 0
+      ? dbCategories.map((c) => ({ slug: c.slug, label: c.label }))
+      : FALLBACK_CATEGORIES.map((c) => ({ slug: c.slug, label: c.label }));
 
   try {
     const supabase = createAdminClient();
@@ -32,13 +40,19 @@ export default async function AdminProductsPage() {
           <p className="font-body text-body-md text-on-surface-variant">
             {products.length} produit{products.length > 1 ? "s" : ""}
           </p>
+          <Link
+            href="/admin/categories"
+            className="mt-1 inline-block font-body text-label-sm text-primary hover:underline"
+          >
+            Gérer les catégories →
+          </Link>
         </div>
-        <AddProductForm />
+        <AddProductForm categories={categories} />
       </div>
 
       <div className="space-y-4">
         {products.map((product) => (
-          <ProductRow key={product.id} product={product} />
+          <ProductRow key={product.id} product={product} categories={categories} />
         ))}
       </div>
 

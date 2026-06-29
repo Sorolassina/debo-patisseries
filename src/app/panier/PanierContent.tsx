@@ -4,15 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Header } from "@/components/layout/Header";
+import { DeliveryForm } from "@/components/checkout/DeliveryForm";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
+import type { CustomerDetails } from "@/lib/customer/types";
+import { validateCustomerDetails } from "@/lib/customer/types";
 import { useShop } from "@/lib/store/shop-context";
 import { formatPrice } from "@/lib/utils/format";
 
 interface PanierContentProps {
   paymentSuccess: boolean;
+  customerDefaults: Partial<CustomerDetails>;
+  isLoggedIn: boolean;
 }
 
-export function PanierContent({ paymentSuccess }: PanierContentProps) {
+export function PanierContent({
+  paymentSuccess,
+  customerDefaults,
+  isLoggedIn,
+}: PanierContentProps) {
   const {
     cart,
     cartTotal,
@@ -22,6 +31,11 @@ export function PanierContent({ paymentSuccess }: PanierContentProps) {
   } = useShop();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [customer, setCustomer] = useState<Partial<CustomerDetails>>(customerDefaults);
+
+  useEffect(() => {
+    setCustomer(customerDefaults);
+  }, [customerDefaults]);
 
   useEffect(() => {
     if (paymentSuccess) {
@@ -32,6 +46,12 @@ export function PanierContent({ paymentSuccess }: PanierContentProps) {
   async function handleCheckout() {
     if (cart.length === 0) return;
 
+    const validated = validateCustomerDetails(customer);
+    if (!validated.ok) {
+      setError(validated.error);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -41,11 +61,14 @@ export function PanierContent({ paymentSuccess }: PanierContentProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "cart",
+          customer: validated.data,
           items: cart.map((line) => ({
             id: line.id,
             name: line.name,
             priceCents: line.priceCents,
             quantity: line.quantity,
+            kind: line.kind,
+            detail: line.detail,
           })),
           totalCents: cartTotal,
         }),
@@ -132,8 +155,14 @@ export function PanierContent({ paymentSuccess }: PanierContentProps) {
 
                   <div className="min-w-0 flex-1">
                     <p className="font-display text-headline-sm text-secondary">
+                      {line.kind === "packaging" ? "Packaging — " : ""}
                       {line.name}
                     </p>
+                    {line.detail ? (
+                      <p className="mt-1 font-body text-label-sm text-on-surface-variant">
+                        {line.detail}
+                      </p>
+                    ) : null}
                     <p className="font-body text-label-md text-primary">
                       {formatPrice(line.priceCents)}
                     </p>
@@ -174,6 +203,17 @@ export function PanierContent({ paymentSuccess }: PanierContentProps) {
                 </li>
               ))}
             </ul>
+
+            {!isLoggedIn ? (
+              <p className="font-body text-label-sm text-on-surface-variant">
+                <Link href="/compte" className="text-primary hover:underline">
+                  Connectez-vous
+                </Link>{" "}
+                pour préremplir vos informations et retrouver vos commandes.
+              </p>
+            ) : null}
+
+            <DeliveryForm values={customer} onChange={(patch) => setCustomer((c) => ({ ...c, ...patch }))} />
 
             <div className="rounded-card border border-outline-variant/40 bg-surface-container-low p-6">
               <div className="mb-4 flex items-center justify-between">

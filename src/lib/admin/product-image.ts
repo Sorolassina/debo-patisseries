@@ -41,19 +41,28 @@ export async function uploadProductImage(
   return data.publicUrl;
 }
 
+export async function resolveImageField(
+  formData: FormData,
+  prefix: string,
+  slug: string,
+  currentUrl?: string | null,
+): Promise<string | null> {
+  const file = formData.get(`${prefix}_file`);
+
+  if (file instanceof File && file.size > 0) {
+    return uploadProductImage(file, `${prefix}-${slug}`);
+  }
+
+  const url = formData.get(`${prefix}_url`)?.toString().trim();
+  if (url) return url;
+
+  return currentUrl ?? null;
+}
+
 export async function resolveProductImageUrl(
   formData: FormData,
   slug: string,
   currentUrl?: string | null,
 ): Promise<string | null> {
-  const file = formData.get("image_file");
-
-  if (file instanceof File && file.size > 0) {
-    return uploadProductImage(file, slug);
-  }
-
-  const url = formData.get("image_url")?.toString().trim();
-  if (url) return url;
-
-  return currentUrl ?? null;
+  return resolveImageField(formData, "image", slug, currentUrl);
 }

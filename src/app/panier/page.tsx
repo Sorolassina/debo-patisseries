@@ -1,4 +1,8 @@
 import { PanierContent } from "@/app/panier/PanierContent";
+import {
+  getCurrentUserProfile,
+  profileToCustomerDefaults,
+} from "@/lib/supabase/profile";
 
 export default async function PanierPage({
   searchParams,
@@ -7,6 +11,14 @@ export default async function PanierPage({
 }) {
   const params = await searchParams;
   const paymentSuccess = params.success === "true";
+  const { userId, profile, email } = await getCurrentUserProfile();
+  const customerDefaults = profileToCustomerDefaults(profile, email);
 
-  return <PanierContent paymentSuccess={paymentSuccess} />;
+  return (
+    <PanierContent
+      paymentSuccess={paymentSuccess}
+      customerDefaults={customerDefaults}
+      isLoggedIn={!!userId}
+    />
+  );
 }

@@ -2,10 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
-import { BUSINESS } from "@/lib/constants/business";
 import { IMAGES } from "@/lib/constants/images";
+import { getSiteSettings } from "@/lib/supabase/site-settings";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const settings = await getSiteSettings();
+  const heroImage = settings.heroImageUrl || IMAGES.heroPastries;
+
   return (
     <>
       <Header transparent />
@@ -13,7 +16,7 @@ export default function HomePage() {
       <main className="relative flex h-screen w-full items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src={IMAGES.heroPastries}
+            src={heroImage}
             alt="Assortiment de pâtisseries artisanales de luxe"
             fill
             priority
@@ -28,21 +31,21 @@ export default function HomePage() {
           style={{ animationDelay: "0.2s" }}
         >
           <span className="mb-6 block font-body text-label-md uppercase tracking-[0.3em] text-primary-fixed-dim">
-            {BUSINESS.tagline}
+            {settings.tagline}
           </span>
 
           <div className="mb-12">
             <h1 className="font-display text-display-lg-mobile text-white drop-shadow-lg md:text-display-lg">
-              {BUSINESS.name}
+              {settings.siteName}
             </h1>
             <p className="mt-3 font-body text-label-md uppercase tracking-[0.2em] text-white/80">
-              {BUSINESS.locationLine}
+              {settings.locationLine}
             </p>
             <div className="mx-auto mt-6 h-px w-24 bg-primary-fixed-dim" />
           </div>
 
           <p className="mx-auto mb-10 max-w-md font-body text-body-lg italic leading-relaxed text-white/90">
-            {BUSINESS.description}
+            {settings.description}
           </p>
 
           <div className="flex flex-col items-center justify-center gap-6 md:flex-row">
@@ -51,6 +54,9 @@ export default function HomePage() {
             </Link>
             <Link href="/coffret">
               <Button variant="secondary">Personnaliser un coffret</Button>
+            </Link>
+            <Link href="/packagings">
+              <Button variant="secondary">Packagings composés</Button>
             </Link>
           </div>
         </div>

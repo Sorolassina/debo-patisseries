@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import { SiteChrome } from "@/components/layout/SiteChrome";
-import { SITE_METADATA } from "@/lib/constants/business";
+import { SiteSettingsProvider } from "@/lib/site/site-context";
+import { getSiteSettings } from "@/lib/supabase/site-settings";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -16,19 +17,24 @@ const dmSans = DM_Sans({
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: SITE_METADATA.title,
-    template: `%s | Douceur du palais`,
-  },
-  description: SITE_METADATA.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return {
+    title: {
+      default: `${settings.siteName} | ${settings.tagline}`,
+      template: `%s | ${settings.siteName}`,
+    },
+    description: settings.description,
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="fr" className={`${playfair.variable} ${dmSans.variable}`}>
       <head>
@@ -38,7 +44,9 @@ export default function RootLayout({
         />
       </head>
       <body className="overflow-x-hidden">
-        <SiteChrome>{children}</SiteChrome>
+        <SiteSettingsProvider settings={settings}>
+          <SiteChrome>{children}</SiteChrome>
+        </SiteSettingsProvider>
       </body>
     </html>
   );

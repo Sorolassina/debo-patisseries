@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { logoutAdmin } from "@/app/admin/actions";
 import { isAdminAuthenticated } from "@/lib/admin/auth";
+import { getSiteSettingsAdmin } from "@/lib/supabase/site-settings";
 
 export default async function AdminLayout({
   children,
@@ -8,6 +9,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const authed = await isAdminAuthenticated();
+  const settings = authed ? await getSiteSettingsAdmin() : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -18,9 +20,39 @@ export default async function AdminLayout({
               href="/admin/products"
               className="font-display text-headline-sm text-primary"
             >
-              Admin — Douceur du palais
+              Admin — {settings?.siteName ?? "Douceur du palais"}
             </Link>
-            <nav className="flex items-center gap-4">
+            <nav className="flex flex-wrap items-center justify-end gap-3 md:gap-4">
+              <Link
+                href="/admin/products"
+                className="font-body text-label-md text-on-surface-variant hover:text-primary"
+              >
+                Produits
+              </Link>
+              <Link
+                href="/admin/categories"
+                className="font-body text-label-md text-on-surface-variant hover:text-primary"
+              >
+                Catégories
+              </Link>
+              <Link
+                href="/admin/packagings"
+                className="font-body text-label-md text-on-surface-variant hover:text-primary"
+              >
+                Packagings
+              </Link>
+              <Link
+                href="/admin/orders"
+                className="font-body text-label-md text-on-surface-variant hover:text-primary"
+              >
+                Commandes
+              </Link>
+              <Link
+                href="/admin/settings"
+                className="font-body text-label-md text-on-surface-variant hover:text-primary"
+              >
+                Paramètres
+              </Link>
               <Link
                 href="/menu"
                 className="font-body text-label-md text-on-surface-variant hover:text-primary"

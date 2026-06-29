@@ -3,9 +3,13 @@
 import { useActionState, useEffect, useState } from "react";
 import { createProduct } from "@/app/admin/actions";
 import { ProductImageFields } from "@/components/admin/ProductImageFields";
-import { PRODUCT_CATEGORIES } from "@/lib/constants/categories";
 
-export function AddProductForm() {
+type CategorySelect = { slug: string; label: string };
+
+const inputClass =
+  "w-full rounded-card border border-outline-variant bg-surface px-4 py-3 font-body text-body-md focus:border-primary focus:outline-none";
+
+export function AddProductForm({ categories }: { categories: CategorySelect[] }) {
   const [open, setOpen] = useState(false);
   const [state, action, pending] = useActionState(createProduct, null);
 
@@ -35,38 +39,55 @@ export function AddProductForm() {
         Nouveau produit
       </h2>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Nom *" name="name" required />
-        <Field label="Slug (auto si vide)" name="slug" placeholder="tarte-pomme" />
-        <Field label="Prix (FCFA) *" name="price" type="number" step="1" min="0" required />
-        <div>
-          <label className="mb-2 block font-body text-label-md text-secondary">
-            Catégorie *
-          </label>
-          <select
-            name="category"
+      <div className="space-y-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12">
+          <Field label="Nom *" name="name" required className="sm:col-span-2 lg:col-span-5" />
+          <Field
+            label="Slug (auto si vide)"
+            name="slug"
+            placeholder="tarte-pomme"
+            className="lg:col-span-3"
+          />
+          <Field
+            label="Prix (FCFA) *"
+            name="price"
+            type="number"
+            step="1"
+            min="0"
             required
-            defaultValue="mignardises"
-            className="w-full rounded-card border border-outline-variant bg-surface px-4 py-3 font-body text-body-md"
-          >
-            {PRODUCT_CATEGORIES.map((c) => (
-              <option key={c.value} value={c.value}>
-                {c.label}
-              </option>
-            ))}
-          </select>
+            className="lg:col-span-2"
+          />
+          <div className="lg:col-span-2">
+            <label htmlFor="category-new" className="mb-2 block font-body text-label-md text-secondary">
+              Catégorie *
+            </label>
+            <select
+              id="category-new"
+              name="category"
+              required
+              defaultValue={categories[0]?.slug ?? "mignardises"}
+              className={inputClass}
+            >
+              {categories.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <ProductImageFields />
+        <ProductImageFields variant="row" />
 
-        <div className="md:col-span-2">
-          <label className="mb-2 block font-body text-label-md text-secondary">
+        <div>
+          <label htmlFor="description-new" className="mb-2 block font-body text-label-md text-secondary">
             Description
           </label>
           <textarea
+            id="description-new"
             name="description"
             rows={2}
-            className="w-full rounded-card border border-outline-variant bg-surface px-4 py-3 font-body text-body-md"
+            className={inputClass}
           />
         </div>
       </div>
@@ -127,7 +148,7 @@ function Field({
         id={name}
         name={name}
         type={type}
-        className="w-full rounded-card border border-outline-variant bg-surface px-4 py-3 font-body text-body-md focus:border-primary focus:outline-none"
+        className={inputClass}
         {...props}
       />
     </div>

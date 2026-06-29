@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { markOrderPaid } from "@/lib/supabase/orders";
 import { getStripe } from "@/lib/stripe/server";
+import { notifyNewOrderViaWhatsApp } from "@/lib/whatsapp/notify-order";
 import type Stripe from "stripe";
 
 function getServiceClient() {
@@ -36,15 +38,23 @@ export async function POST(request: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
 
     if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      const supabase = getServiceClient();
+      const orderId = session.metadata?.order_id;
 
-      await supabase.from("orders").insert({
-        stripe_session_id: session.id,
-        status: "paid",
-        total_cents: session.amount_total ?? 0,
-        custom_message: session.metadata?.custom_message || null,
-        hide_price: session.metadata?.hide_price === "true",
-      });
+      if (orderId) {
+        await markOrderPaid(orderId, session.id);
+        await notifyNewOrderViaWhatsApp(orderId);
+      } else {
+        const supabase = getServiceClient();
+        await supabase.from("orders").insert({
+          stripe_session_id: session.id,
+          status: "paid",
+          total_cents: session.amount_total ?? 0,
+          custom_message: session.metadata?.custom_message || null,
+          hide_price: session.metadata?.hide_price === "true",
+          order_type: session.metadata?.order_type ?? "cart",
+          customer_email: session.customer_details?.email ?? null,
+        });
+      }
     }
   }
 

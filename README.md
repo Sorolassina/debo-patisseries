@@ -92,6 +92,37 @@ Variables d'environnement :
 
 Webhook Stripe : `https://votre-domaine.vercel.app/api/webhooks/stripe`
 
+## Notifications WhatsApp (commandes)
+
+Quand un client paie, l'entreprise peut recevoir un **message WhatsApp** avec le détail de la commande (client, adresse, articles, total).
+
+### Option 1 — CallMeBot (simple, gratuit)
+
+1. Dans **Admin → Paramètres**, renseignez le numéro WhatsApp de l'entreprise (ex. `+225 07 XX XX XX XX`)
+2. Sur le téléphone de ce numéro, envoyez à **CallMeBot** (+34 684 72 97 22) le message :  
+   `I allow callmebot to send me messages`
+3. CallMeBot vous répond avec une **clé API**
+4. Variables d'environnement (local + Vercel) :
+
+| Variable | Valeur |
+|----------|--------|
+| `WHATSAPP_PROVIDER` | `callmebot` |
+| `WHATSAPP_CALLMEBOT_API_KEY` | clé reçue par CallMeBot |
+| `WHATSAPP_NOTIFY_PHONE` | *(optionnel)* numéro qui reçoit l'alerte ; sinon = WhatsApp admin |
+
+### Option 2 — Meta WhatsApp Business API (professionnel)
+
+Compte [Meta for Developers](https://developers.facebook.com/), application WhatsApp Business, numéro vérifié.
+
+| Variable | Description |
+|----------|-------------|
+| `WHATSAPP_PROVIDER` | `meta` |
+| `WHATSAPP_META_ACCESS_TOKEN` | Token d'accès permanent |
+| `WHATSAPP_META_PHONE_NUMBER_ID` | ID du numéro WhatsApp Business |
+| `WHATSAPP_NOTIFY_PHONE` | Numéro destinataire (format international) |
+
+Si `WHATSAPP_PROVIDER` est vide, aucune notification n'est envoyée (comportement par défaut).
+
 ## Pages
 
 | Route | Description |

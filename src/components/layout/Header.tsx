@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
-import { BUSINESS } from "@/lib/constants/business";
+import { useSiteSettings } from "@/lib/site/site-context";
 
 interface HeaderProps {
   transparent?: boolean;
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 export function Header({ transparent = false, showBack = false }: HeaderProps) {
+  const settings = useSiteSettings();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
 
@@ -76,9 +78,22 @@ export function Header({ transparent = false, showBack = false }: HeaderProps) {
 
         <Link
           href="/"
-          className="font-display text-display-lg-mobile tracking-tight text-primary md:text-[1.75rem]"
+          className="flex max-w-[55%] items-center justify-center md:max-w-none"
         >
-          {BUSINESS.name}
+          {settings.logoUrl ? (
+            <Image
+              src={settings.logoUrl}
+              alt={settings.siteName}
+              width={160}
+              height={48}
+              className="h-10 w-auto max-w-[160px] object-contain md:h-12"
+              priority
+            />
+          ) : (
+            <span className="truncate text-center font-display text-display-lg-mobile tracking-tight text-primary md:text-[1.75rem]">
+              {settings.siteName}
+            </span>
+          )}
         </Link>
 
         <button

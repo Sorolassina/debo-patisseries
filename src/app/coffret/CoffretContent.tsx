@@ -2,13 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "@/components/layout/Header";
+import { DeliveryForm } from "@/components/checkout/DeliveryForm";
 import { MenuProductCard } from "@/components/menu/MenuProductCard";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
+import type { CustomerDetails } from "@/lib/customer/types";
+import { validateCustomerDetails } from "@/lib/customer/types";
 import { IMAGES } from "@/lib/constants/images";
 import type { MenuProduct } from "@/lib/constants/menu";
-import { BUSINESS } from "@/lib/constants/business";
+import { packagingDetailLine, type PackagingView } from "@/lib/packaging/types";
+import { useSiteSettings } from "@/lib/site/site-context";
+import { useShop } from "@/lib/store/shop-context";
 import { formatPrice } from "@/lib/utils/format";
 
 const BOX_SIZES = [
@@ -40,25 +45,49 @@ const THEMES = [
 
 interface CoffretContentProps {
   upsells: MenuProduct[];
+  packagings: PackagingView[];
+  customerDefaults: Partial<CustomerDetails>;
+  isLoggedIn: boolean;
 }
 
-export function CoffretContent({ upsells }: CoffretContentProps) {
+export function CoffretContent({
+  upsells,
+  packagings,
+  customerDefaults,
+  isLoggedIn,
+}: CoffretContentProps) {
+  const settings = useSiteSettings();
+  const { addPackagingToCart } = useShop();
   const [selectedSize, setSelectedSize] = useState("signature");
   const [selectedTheme, setSelectedTheme] = useState("or");
   const [message, setMessage] = useState("");
   const [hidePrice, setHidePrice] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [customer, setCustomer] = useState<Partial<CustomerDetails>>(customerDefaults);
+
+  useEffect(() => {
+    setCustomer(customerDefaults);
+  }, [customerDefaults]);
 
   const currentSize =
     BOX_SIZES.find((s) => s.id === selectedSize) ?? BOX_SIZES[1];
 
   async function handleCheckout() {
+    const validated = validateCustomerDetails(customer);
+    if (!validated.ok) {
+      setError(validated.error);
+      return;
+    }
+
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          customer: validated.data,
           boxSizeId: selectedSize,
           boxThemeId: selectedTheme,
           customMessage: message,
@@ -70,9 +99,12 @@ export function CoffretContent({ upsells }: CoffretContentProps) {
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
+        return;
       }
+
+      setError(data.error ?? "Impossible de lancer le paiement.");
     } catch {
-      alert("Erreur lors du paiement. Vérifiez la configuration Stripe.");
+      setError("Erreur lors du paiement. Vérifiez la configuration Stripe.");
     } finally {
       setLoading(false);
     }
@@ -106,7 +138,7 @@ export function CoffretContent({ upsells }: CoffretContentProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
                 <span className="mb-2 inline-block rounded-full bg-primary px-3 py-1 font-body text-label-sm text-white">
-                  {BUSINESS.craftBadge}
+                  {settings.craftBadge}
                 </span>
                 <p className="font-display text-headline-sm italic text-white">
                   &ldquo;L&apos;élégance se cache dans les détails&rdquo;
@@ -246,6 +278,25 @@ export function CoffretContent({ upsells }: CoffretContentProps) {
               </div>
             </section>
 
+            {!isLoggedIn ? (
+              <p className="font-body text-label-sm text-on-surface-variant">
+                <Link href="/compte" className="text-primary hover:underline">
+                  Connectez-vous
+                </Link>{" "}
+                pour préremplir vos informations de livraison.
+              </p>
+            ) : null}
+
+            <DeliveryForm
+              idPrefix="coffret"
+              values={customer}
+              onChange={(patch) => setCustomer((c) => ({ ...c, ...patch }))}
+            />
+
+            {error ? (
+              <p className="font-body text-label-md text-error">{error}</p>
+            ) : null}
+
             <div className="flex items-center justify-between gap-6 border-t border-outline-variant pt-6">
               <div className="flex flex-col">
                 <span className="font-body text-label-sm uppercase tracking-widest text-outline">
@@ -261,7 +312,7 @@ export function CoffretContent({ upsells }: CoffretContentProps) {
                 disabled={loading}
                 className="group flex flex-1 items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 font-body text-label-md text-white shadow-lg shadow-primary/20 transition-all hover:bg-on-primary-container active:scale-95 disabled:opacity-60"
               >
-                {loading ? "Redirection..." : "Ajouter au panier"}
+                {loading ? "Redirection..." : "Commander ce coffret"}
                 <MaterialIcon
                   name="shopping_bag"
                   className="text-[20px] transition-transform group-hover:translate-x-1"
@@ -270,6 +321,62 @@ export function CoffretContent({ upsells }: CoffretContentProps) {
             </div>
           </div>
         </div>
+
+        {packagings.length > 0 ? (
+          <section className="mt-24">
+            <div className="mb-12 flex flex-col items-center gap-3 text-center">
+              <h2 className="font-display text-headline-md text-secondary">
+                Packagings composés
+              </h2>
+              <p className="max-w-xl font-body text-body-md text-on-surface-variant">
+                Ensembles prêts à commander, ou{" "}
+                <Link href="/packagings" className="text-primary hover:underline">
+                  parcourez toute la collection
+                </Link>
+                .
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {packagings.slice(0, 3).map((packaging) => {
+                const detail = packagingDetailLine(packaging.items);
+                const imageUrl = packaging.imageUrl || IMAGES.giftBox;
+                return (
+                  <article
+                    key={packaging.id}
+                    className="rounded-card border border-outline-variant/40 bg-surface p-5"
+                  >
+                    <h3 className="font-display text-headline-sm text-secondary">
+                      {packaging.name}
+                    </h3>
+                    <p className="mt-2 font-body text-label-sm text-on-surface-variant">
+                      {detail}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="font-body text-label-md text-primary">
+                        {formatPrice(packaging.priceCents)}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addPackagingToCart({
+                            slug: packaging.slug,
+                            name: packaging.name,
+                            priceCents: packaging.priceCents,
+                            imageUrl,
+                            detail,
+                          })
+                        }
+                        className="rounded-full bg-primary px-4 py-2 font-body text-label-sm text-on-primary"
+                      >
+                        Ajouter au panier
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        ) : null}
 
         {upsells.length > 0 ? (
           <section className="mt-24">

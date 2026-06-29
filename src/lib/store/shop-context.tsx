@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import type { CartLine, ProductSnapshot } from "@/lib/store/types";
+import { toPackagingCartLine, toProductCartLine } from "@/lib/store/types";
 
 const CART_KEY = "debo-cart";
 const FAVORITES_KEY = "debo-favorites";
@@ -22,6 +23,13 @@ type ShopContextValue = {
   cartCount: number;
   cartTotal: number;
   addToCart: (product: ProductSnapshot, quantity?: number) => void;
+  addPackagingToCart: (input: {
+    slug: string;
+    name: string;
+    priceCents: number;
+    imageUrl: string;
+    detail: string;
+  }) => void;
   removeFromCart: (productId: string) => void;
   updateCartQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -44,6 +52,14 @@ function readStorage<T>(key: string, fallback: T): T {
   }
 }
 
+function normalizeCartLine(line: CartLine): CartLine {
+  return {
+    ...line,
+    kind: line.kind ?? "product",
+    imageAlt: line.imageAlt ?? line.name,
+  };
+}
+
 export function ShopProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartLine[]>([]);
   const [favorites, setFavorites] = useState<ProductSnapshot[]>([]);
@@ -51,7 +67,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<Toast>(null);
 
   useEffect(() => {
-    setCart(readStorage(CART_KEY, []));
+    setCart(readStorage<CartLine[]>(CART_KEY, []).map(normalizeCartLine));
     setFavorites(readStorage(FAVORITES_KEY, []));
     setHydrated(true);
   }, []);
@@ -78,18 +94,44 @@ export function ShopProvider({ children }: { children: ReactNode }) {
 
   const addToCart = useCallback(
     (product: ProductSnapshot, quantity = 1) => {
+      const incoming = toProductCartLine(product, quantity);
       setCart((prev) => {
-        const existing = prev.find((line) => line.id === product.id);
+        const existing = prev.find((line) => line.id === incoming.id);
         if (existing) {
           return prev.map((line) =>
-            line.id === product.id
+            line.id === incoming.id
               ? { ...line, quantity: line.quantity + quantity }
               : line,
           );
         }
-        return [...prev, { ...product, quantity }];
+        return [...prev, incoming];
       });
       showToast(`${product.name} ajouté au panier`);
+    },
+    [showToast],
+  );
+
+  const addPackagingToCart = useCallback(
+    (input: {
+      slug: string;
+      name: string;
+      priceCents: number;
+      imageUrl: string;
+      detail: string;
+    }) => {
+      const incoming = toPackagingCartLine(input);
+      setCart((prev) => {
+        const existing = prev.find((line) => line.id === incoming.id);
+        if (existing) {
+          return prev.map((line) =>
+            line.id === incoming.id
+              ? { ...line, quantity: line.quantity + 1 }
+              : line,
+          );
+        }
+        return [...prev, incoming];
+      });
+      showToast(`${input.name} ajouté au panier`);
     },
     [showToast],
   );
@@ -156,6 +198,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
       cartCount,
       cartTotal,
       addToCart,
+      addPackagingToCart,
       removeFromCart,
       updateCartQuantity,
       clearCart,
@@ -171,6 +214,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
       cartCount,
       cartTotal,
       addToCart,
+      addPackagingToCart,
       removeFromCart,
       updateCartQuantity,
       clearCart,

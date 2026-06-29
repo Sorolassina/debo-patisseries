@@ -4,15 +4,22 @@ import { useMemo, useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { CategoryChips } from "@/components/menu/CategoryChips";
 import { MenuProductCard } from "@/components/menu/MenuProductCard";
-import { MENU_CATEGORIES, type MenuCategory, type MenuProduct } from "@/lib/constants/menu";
-import { BUSINESS } from "@/lib/constants/business";
+import { useSiteSettings } from "@/lib/site/site-context";
+import type { MenuCategory, MenuProduct } from "@/lib/constants/menu";
 
 interface MenuContentProps {
   products: MenuProduct[];
+  categories: { id: MenuCategory; label: string }[];
+  defaultCategory: MenuCategory;
 }
 
-export function MenuContent({ products }: MenuContentProps) {
-  const [category, setCategory] = useState<MenuCategory>("mignardises");
+export function MenuContent({
+  products,
+  categories,
+  defaultCategory,
+}: MenuContentProps) {
+  const settings = useSiteSettings();
+  const [category, setCategory] = useState<MenuCategory>(defaultCategory);
 
   const filtered = useMemo(
     () => products.filter((p) => p.category === category),
@@ -26,7 +33,7 @@ export function MenuContent({ products }: MenuContentProps) {
       <main className="mx-auto max-w-container-max px-margin-mobile pb-36 pt-24 md:px-margin-desktop">
         <header className="mb-8">
           <span className="mb-3 block font-body text-label-md uppercase tracking-[0.25em] text-primary">
-            {BUSINESS.tagline} · {BUSINESS.city}
+            {settings.tagline} · {settings.city}
           </span>
           <h1 className="font-display text-headline-md text-secondary md:text-display-lg-mobile">
             Nos Créations
@@ -35,7 +42,7 @@ export function MenuContent({ products }: MenuContentProps) {
 
         <div className="mb-10">
           <CategoryChips
-            categories={MENU_CATEGORIES}
+            categories={categories}
             active={category}
             onChange={setCategory}
           />

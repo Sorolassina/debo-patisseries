@@ -1,9 +1,6 @@
-import {
-  PRODUCT_CATEGORIES,
-  type ProductCategory,
-} from "@/lib/constants/categories";
+import { FALLBACK_CATEGORIES, toMenuChips } from "@/lib/constants/categories";
 
-export type MenuCategory = ProductCategory;
+export type MenuCategory = string;
 
 export interface MenuProduct {
   id: string;
@@ -16,10 +13,7 @@ export interface MenuProduct {
   seasonal?: boolean;
 }
 
-export const MENU_CATEGORIES = PRODUCT_CATEGORIES.map(({ value, label }) => ({
-  id: value,
-  label,
-}));
+export const MENU_CATEGORIES = toMenuChips([...FALLBACK_CATEGORIES]);
 
 export const MENU_PRODUCTS: MenuProduct[] = [
   {
