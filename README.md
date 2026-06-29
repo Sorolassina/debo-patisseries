@@ -7,21 +7,16 @@ Application e-commerce pour une pâtisserie haut de gamme.
 ## Structure
 
 ```
-Debo-Restaurant/
+debo-patisseries/
 ├── templates/          # Maquettes HTML & design system (référence)
-└── web/                # Application Next.js
-    ├── src/
-    │   ├── app/        # Pages & API routes
-    │   ├── components/ # UI & layout
-    │   └── lib/        # Supabase, Stripe, utils
-    └── supabase/
-        └── migrations/ # Schéma SQL
+├── src/                # Application Next.js
+├── supabase/           # Migrations SQL
+└── public/             # Assets statiques
 ```
 
 ## Démarrage rapide
 
 ```bash
-cd web
 cp .env.local.example .env.local
 # Renseigner les clés Supabase et Stripe
 npm install
@@ -49,27 +44,24 @@ Ouvrir [http://localhost:3000](http://localhost:3000).
 
 ## Déploiement Vercel
 
-### Option recommandée (Root Directory)
+| Paramètre | Valeur |
+|-----------|--------|
+| **Framework Preset** | Next.js |
+| **Root Directory** | `./` (racine) |
+| **Build Command** | *(par défaut)* |
+| **Install Command** | *(par défaut)* |
 
-1. Importer le repo sur [vercel.com](https://vercel.com)
-2. **Settings → General → Root Directory** → cliquer **Edit** → saisir `web` → **Save**
-3. **Framework Preset** : **Next.js**
-4. Ajouter les variables d'environnement (voir `.env.local.example` dans `web/`)
-5. Redéployer
+Variables d'environnement :
 
-### Si Root Directory reste `./`
-
-Un `vercel.json` à la racine du repo redirige install/build vers `web/`. Poussez les derniers commits puis redéployez.
-
-| Variable | Exemple |
-|----------|---------|
-| `NEXT_PUBLIC_SUPABASE_URL` | `https://xxx.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | clé anon |
-| `SUPABASE_SERVICE_ROLE_KEY` | clé service role |
-| `STRIPE_SECRET_KEY` | `sk_test_...` |
-| `STRIPE_WEBHOOK_SECRET` | `whsec_...` |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | `pk_test_...` |
-| `NEXT_PUBLIC_APP_URL` | `https://debo-patisseries.vercel.app` |
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL du projet Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clé anon Supabase |
+| `SUPABASE_SERVICE_ROLE_KEY` | Clé service role (webhooks) |
+| `STRIPE_SECRET_KEY` | Clé secrète Stripe |
+| `STRIPE_WEBHOOK_SECRET` | Secret webhook Stripe |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Clé publique Stripe |
+| `NEXT_PUBLIC_APP_URL` | URL Vercel (ex. `https://debo-patisseries.vercel.app`) |
 
 Webhook Stripe : `https://votre-domaine.vercel.app/api/webhooks/stripe`
 
